@@ -1,0 +1,42 @@
+1.Raycast法
+原理相同于3D中得Raycast法，具体使用略有区别。
+
+RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+ 
+if(hit.collider != null)
+{ 
+　　Debug.Log (\"Target Position: \" + hit.collider.gameObject.transform.position);
+　　//and do what you want
+}
+
+2.Overlap法
+个人觉得这个方法对于2D更合适一些，判断点击的点落在了哪些collider中。
+
+Collider2D[] col = Physics2D.OverlapPointAll(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+  
+if(col.Length > 0)
+{
+    foreach(Collider2D c in col)
+    {
+         //do what you want
+    }
+}
+
+
+注： 以上方法适用于2D精灵类检测，UGUI不适用
+
+UGUI检测 通过自封装的EventSystems检测
+
+if (Input.GetMouseButtonDown(0)||(Input.touchCount >0 && Input.GetTouch(0).phase == TouchPhase.Began))
+		{
+#if IPHONE || ANDROID
+			if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+#else
+			if (EventSystem.current.IsPointerOverGameObject())
+#endif
+				Debug.Log("当前触摸在UI上");
+			
+			else 
+				Debug.Log("当前没有触摸在UI上");
+		}
+	
